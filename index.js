@@ -124,13 +124,7 @@ function draw() {
       ) {
         sheep.y += speedY;
       }
-    } else if (
-      dist(myShared.dogX, myShared.dogY, sheep.x, sheep.y) < 100 &&
-      sheep.x > 30 &&
-      sheep.x < width - 30 &&
-      sheep.y > 30 &&
-      sheep.y < height - 30
-    ) {
+    } else if (dist(myShared.dogX, myShared.dogY, sheep.x, sheep.y) < 100) {
       // in weaker effect range
       const speed = 1;
       let speedX;
