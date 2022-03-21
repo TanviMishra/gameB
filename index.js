@@ -78,18 +78,34 @@ function draw() {
 
   // detect key presses
   if (keyIsPressed) {
-    switch (key) {
-      case "ArrowLeft":
-        if (myShared.dogX > 5) myShared.dogX -= 5;
-        break;
-      case "ArrowRight":
-        if (myShared.dogX < width - 5) myShared.dogX += 5;
-        break;
-      case "ArrowUp":
-        if (myShared.dogY > 5) myShared.dogY -= 5;
-        break;
-      case "ArrowDown":
+    if (keyIsDown(LEFT_ARROW)) {
+      if (myShared.dogX > 5) myShared.dogX -= 5;
+      if (keyIsDown(DOWN_ARROW)) {
         if (myShared.dogY < height - 5) myShared.dogY += 5;
+      } else if (keyIsDown(UP_ARROW)) {
+        if (myShared.dogY > 5) myShared.dogY -= 5;
+      }
+    } else if (keyIsDown(RIGHT_ARROW)) {
+      if (myShared.dogX < width - 5) myShared.dogX += 5;
+      if (keyIsDown(DOWN_ARROW)) {
+        if (myShared.dogY < height - 5) myShared.dogY += 5;
+      } else if (keyIsDown(UP_ARROW)) {
+        if (myShared.dogY > 5) myShared.dogY -= 5;
+      }
+    } else if (keyIsDown(UP_ARROW)) {
+      if (myShared.dogY > 5) myShared.dogY -= 5;
+      if (keyIsDown(LEFT_ARROW)) {
+        if (myShared.dogX > 5) myShared.dogX -= 5;
+      } else if (keyIsDown(RIGHT_ARROW)) {
+        if (myShared.dogX < width - 5) myShared.dogX += 5;
+      }
+    } else if (keyIsDown(DOWN_ARROW)) {
+      if (myShared.dogY < height - 5) myShared.dogY += 5;
+      if (keyIsDown(LEFT_ARROW)) {
+        if (myShared.dogX > 5) myShared.dogX -= 5;
+      } else if (keyIsDown(RIGHT_ARROW)) {
+        if (myShared.dogX < width - 5) myShared.dogX += 5;
+      }
     }
   }
 
