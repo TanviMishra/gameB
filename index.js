@@ -206,7 +206,7 @@ function draw() {
         }
       });
       // not in effect range, move randomly
-      if (partyIsHost() && !inOtherDogsRange) {
+      if (partyIsHost() && !inOtherDogsRange && ptShareds.length < 2) {
         if (frameCount % 50 === 0) {
           prevMoveVal0 = Math.random() * (Math.round(Math.random()) ? 1 : -1);
           prevMoveVal1 = Math.random() * (Math.round(Math.random()) ? 1 : -1);
