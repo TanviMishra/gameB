@@ -81,12 +81,14 @@ function setup() {
     myShared.dogY = height - 5;
   }
   // 10 sheeps for each user at random positions
-  for (let i = 0; i < 10; i++) {
-    shared.sheepXY.push({
-      id: random(),
-      x: (width - 60) * random() + 30,
-      y: (height - 60) * random() + 30,
-    });
+  if (shared.sheepXY.length < ptShareds.length * 10) {
+    for (let i = 0; i < 10; i++) {
+      shared.sheepXY.push({
+        id: random(),
+        x: (width - 60) * random() + 30,
+        y: (height - 60) * random() + 30,
+      });
+    }
   }
   // change angle mode to degrees
   angleMode(DEGREES);
