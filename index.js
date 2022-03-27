@@ -303,7 +303,10 @@ function draw() {
       }
       let inOtherDogsRange = false;
       ptShareds.forEach((dog) => {
-        if (dog.sheepsInRange.findIndex((id) => id === sheep.id) >= 0) {
+        if (
+          dog.sheepsInRange &&
+          dog.sheepsInRange.findIndex((id) => id === sheep.id) >= 0
+        ) {
           inOtherDogsRange = true;
         }
       });
