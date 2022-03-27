@@ -169,7 +169,7 @@ function draw() {
     // draw the sheeps
     circle(sheep.x, sheep.y, sheepRadius);
     //check if sheep is hitting the fence
-    sheepFenceHit = checkFenceHit(sheep.x, sheep.y, sheepRadius);
+    sheepFenceHit = checkFenceHit(sheep.x, sheep.y, sheepRadius + 30);
     // calculate heading
     const heading = createVector(
       sheep.x - myShared.dogX,
