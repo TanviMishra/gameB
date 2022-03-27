@@ -389,7 +389,7 @@ function checkFenceHit(objX, objY, r) {
   );
   hit2 = collideRectCircle(
     fenceStartX,
-    fenceStartY + fenceHeight - fenceWidth,
+    fenceStartY,
     fenceHeight,
     fenceWidth,
     objX,
