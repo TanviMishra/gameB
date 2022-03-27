@@ -215,13 +215,7 @@ function draw() {
       if (myShared.sheepsInRange.findIndex((id) => id === sheep.id) < 0) {
         myShared.sheepsInRange.push(sheep.id);
       }
-      let speed;
-      if (sheepFenceHit) {
-        speed = -1;
-        console.log("hit");
-      } else {
-        speed = 2;
-      }
+      let speed = 2;
       // calculate speed x and y based on heading
       let speedX;
       let speedY;
@@ -258,13 +252,7 @@ function draw() {
       if (myShared.sheepsInRange.findIndex((id) => id === sheep.id) < 0) {
         myShared.sheepsInRange.push(sheep.id);
       }
-      let speed;
-      if (sheepFenceHit) {
-        speed = -1;
-        console.log("hit");
-      } else {
-        speed = 1;
-      }
+      let speed = 1;
       let speedX = speed;
       let speedY = speed;
       if (heading >= 0 && heading < 90) {
