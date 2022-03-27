@@ -14,10 +14,12 @@ let prevMoveVal7 = 0;
 let prevMoveVal8 = 0;
 let prevMoveVal9 = 0;
 
-let hit1 = false; let hit2 = false; let hit3 = false;
-let col="#1b5bc2";
-let dogRadius=20;
-let sheepRadius=20;
+let hit1 = false;
+let hit2 = false;
+let hit3 = false;
+let col = "#1b5bc2";
+let dogRadius = 20;
+let sheepRadius = 20;
 let dogFenceHit = false;
 let sheepFenceHit = false;
 
@@ -85,39 +87,37 @@ function draw() {
     fill(color(138, 48, 0, 50));
     circle(partcpt.dogX, partcpt.dogY, 200);
   });
-  dogFenceHit = checkFenceHit(myShared.dogX, myShared.dogY,dogRadius) //check if dog is hitting the fence
+  dogFenceHit = checkFenceHit(myShared.dogX, myShared.dogY, dogRadius); //check if dog is hitting the fence
   // detect key presses
   if (keyIsPressed) {
-    if(dogFenceHit){
-      myShared.dogX=prevDogX; myShared.dogY=prevDogY; //fence hit so send dog back to previous position
-    }
-    else{
-      prevDogX=myShared.dogX; prevDogY=myShared.dogY; //update previous position
-      if(keyIsDown(LEFT_ARROW)) {
+    if (dogFenceHit) {
+      myShared.dogX = prevDogX;
+      myShared.dogY = prevDogY; //fence hit so send dog back to previous position
+    } else {
+      prevDogX = myShared.dogX;
+      prevDogY = myShared.dogY; //update previous position
+      if (keyIsDown(LEFT_ARROW)) {
         if (myShared.dogX > 5) myShared.dogX -= 5;
         if (keyIsDown(DOWN_ARROW)) {
           if (myShared.dogY < height - 5) myShared.dogY += 5;
         } else if (keyIsDown(UP_ARROW)) {
           if (myShared.dogY > 5) myShared.dogY -= 5;
         }
-      } 
-      else if (keyIsDown(RIGHT_ARROW)) {
+      } else if (keyIsDown(RIGHT_ARROW)) {
         if (myShared.dogX < width - 5) myShared.dogX += 5;
         if (keyIsDown(DOWN_ARROW)) {
           if (myShared.dogY < height - 5) myShared.dogY += 5;
         } else if (keyIsDown(UP_ARROW)) {
           if (myShared.dogY > 5) myShared.dogY -= 5;
         }
-      } 
-      else if (keyIsDown(UP_ARROW)) {
+      } else if (keyIsDown(UP_ARROW)) {
         if (myShared.dogY > 5) myShared.dogY -= 5;
         if (keyIsDown(LEFT_ARROW)) {
           if (myShared.dogX > 5) myShared.dogX -= 5;
         } else if (keyIsDown(RIGHT_ARROW)) {
           if (myShared.dogX < width - 5) myShared.dogX += 5;
         }
-      } 
-      else if (keyIsDown(DOWN_ARROW)) {
+      } else if (keyIsDown(DOWN_ARROW)) {
         if (myShared.dogY < height - 5) myShared.dogY += 5;
         if (keyIsDown(LEFT_ARROW)) {
           if (myShared.dogX > 5) myShared.dogX -= 5;
@@ -131,15 +131,17 @@ function draw() {
   shared.sheepXY.forEach((sheep, idx) => {
     // draw the sheeps
     circle(sheep.x, sheep.y, sheepRadius);
-    sheepFenceHit = checkFenceHit(sheep.x, sheep.y, sheepRadius) //check if sheep is hitting the fence
+    sheepFenceHit = checkFenceHit(sheep.x, sheep.y, sheepRadius); //check if sheep is hitting the fence
     // calculate heading
     const heading = createVector(
       sheep.x - myShared.dogX,
       sheep.y - myShared.dogY
     ).heading();
-    if(sheepFenceHit){
-      let speed = -1; console.log('hit')
-      let speedX; let speedY;
+    if (sheepFenceHit) {
+      let speed = -1;
+      console.log("hit");
+      let speedX;
+      let speedY;
       if (heading >= 0 && heading < 90) {
         speedX = sin(heading) * speed;
         speedY = cos(heading) * speed;
@@ -173,10 +175,13 @@ function draw() {
       if (myShared.sheepsInRange.findIndex((id) => id === sheep.id) < 0) {
         myShared.sheepsInRange.push(sheep.id);
       }
-      if(sheepFenceHit){speed = -1; console.log('hit')}
-      else speed = 2;
+      if (sheepFenceHit) {
+        speed = -1;
+        console.log("hit");
+      } else speed = 2;
       // calculate speed x and y based on heading
-      let speedX; let speedY;
+      let speedX;
+      let speedY;
       if (heading >= 0 && heading < 90) {
         speedX = sin(heading) * speed;
         speedY = cos(heading) * speed;
@@ -210,9 +215,12 @@ function draw() {
       if (myShared.sheepsInRange.findIndex((id) => id === sheep.id) < 0) {
         myShared.sheepsInRange.push(sheep.id);
       }
-      if(sheepFenceHit){speed = -1; console.log('hit')}
-      else speed = 1;
-      speedX= speed; speedY= speed;
+      if (sheepFenceHit) {
+        speed = -1;
+        console.log("hit");
+      } else speed = 1;
+      speedX = speed;
+      speedY = speed;
       if (heading >= 0 && heading < 90) {
         speedX = sin(heading) * speed;
         speedY = cos(heading) * speed;
@@ -326,23 +334,54 @@ function draw() {
   });
   drawFence();
 }
-function drawFence(){
+function drawFence() {
   fill(col);
-  rect(fenceStartX,fenceStartY,fenceWidth,fenceHeight);
-  rect(fenceStartX,fenceStartY+fenceHeight-fenceWidth,fenceHeight,fenceWidth);
-  rect(fenceStartX+fenceHeight-fenceWidth,fenceStartY,fenceWidth,fenceHeight);
+  rect(fenceStartX, fenceStartY, fenceWidth, fenceHeight);
+  rect(
+    fenceStartX,
+    fenceStartY + fenceHeight - fenceWidth,
+    fenceHeight,
+    fenceWidth
+  );
+  rect(
+    fenceStartX + fenceHeight - fenceWidth,
+    fenceStartY,
+    fenceWidth,
+    fenceHeight
+  );
 }
-function checkFenceHit(objX,objY,r){
-  hit1 = collideRectCircle(fenceStartX,fenceStartY,fenceWidth,fenceHeight,objX,objY,r);
-  hit2 = collideRectCircle(fenceStartX,fenceStartY+fenceHeight-fenceWidth,fenceHeight,fenceWidth,objX,objY,r);
-  hit3 = collideRectCircle(fenceStartX+fenceHeight-fenceWidth,fenceStartY,fenceWidth,fenceHeight,objX,objY,r);
-  if(hit1 || hit2 || hit3){
+function checkFenceHit(objX, objY, r) {
+  hit1 = collideRectCircle(
+    fenceStartX,
+    fenceStartY,
+    fenceWidth,
+    fenceHeight,
+    objX,
+    objY,
+    r
+  );
+  hit2 = collideRectCircle(
+    fenceStartX,
+    fenceStartY + fenceHeight - fenceWidth,
+    fenceHeight,
+    fenceWidth,
+    objX,
+    objY,
+    r
+  );
+  hit3 = collideRectCircle(
+    fenceStartX + fenceHeight - fenceWidth,
+    fenceStartY,
+    fenceWidth,
+    fenceHeight,
+    objX,
+    objY,
+    r
+  );
+  if (hit1 || hit2 || hit3) {
     return true;
-  }
-  else{
+  } else {
     return false;
   }
 }
-function keyMove(){
-
-}
+function keyMove() {}
