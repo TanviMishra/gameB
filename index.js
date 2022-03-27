@@ -1,3 +1,10 @@
+//image variables
+let fenceH;
+let fenceLT;
+let fenceRT;
+let fenceV;
+let fence;
+let grass;
 // shared variables
 let shared;
 let ptShareds;
@@ -17,13 +24,24 @@ let prevMoveVal9 = 0;
 let hit1 = false;
 let hit2 = false;
 let hit3 = false;
-let col = "#1b5bc2";
+let fenceTempColor; // TODO: make it disappear
 let dogRadius = 20;
 let sheepRadius = 20;
 let dogFenceHit = false;
 let sheepFenceHit = false;
+let fenceWidth = 24;
+let fenceHeight = 200;
+let fenceStartX;
+let fenceStartY;
 
 function preload() {
+  // load assets
+  fenceH = loadImage("assets/fenceH.jpg");
+  fenceLT = loadImage("assets/fenceLT.jpg");
+  fenceRT = loadImage("assets/fenceRT.jpg");
+  fenceV = loadImage("assets/fenceV.jpg");
+  fence = loadImage("assets/fence.jpg");
+  grass = loadImage("assets/grass.jpg");
   // connect & init shared variables
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
@@ -37,10 +55,11 @@ function preload() {
 
 function setup() {
   createCanvas(800, 800);
-  fenceWidth = 8;
-  fenceHeight = 80;
-  fenceStartX = 700;
-  fenceStartY = 700;
+  fenceTempColor = color(28, 91, 194, 100);
+  // set fence to center of canvas
+  fenceStartX = width / 2 - fenceHeight / 2;
+  fenceStartY = height / 2 - fenceHeight / 2;
+  // first client init
   if (partyIsHost()) {
     shared.sheepXY = [];
   }
@@ -71,10 +90,14 @@ function setup() {
   }
   // change angle mode to degrees
   angleMode(DEGREES);
+  // change image mode to center
+  imageMode(CENTER);
 }
 
 function draw() {
   background(220);
+  // draw assets
+  drawAssets();
   // draw dogs
   ptShareds.forEach((partcpt, idx) => {
     noStroke();
@@ -344,14 +367,9 @@ function draw() {
   drawFence();
 }
 function drawFence() {
-  fill(col);
+  fill(fenceTempColor);
   rect(fenceStartX, fenceStartY, fenceWidth, fenceHeight);
-  rect(
-    fenceStartX,
-    fenceStartY + fenceHeight - fenceWidth,
-    fenceHeight,
-    fenceWidth
-  );
+  rect(fenceStartX, fenceStartY, fenceHeight, fenceWidth);
   rect(
     fenceStartX + fenceHeight - fenceWidth,
     fenceStartY,
@@ -393,4 +411,28 @@ function checkFenceHit(objX, objY, r) {
     return false;
   }
 }
-function keyMove() {}
+
+function drawAssets() {
+  // draw all the grass first
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      image(grass, j * (fenceHeight / 2), i * (fenceHeight / 2));
+    }
+  }
+  // draw fences on top
+  image(fenceH, fenceStartX + fenceHeight / 2, fenceStartY + fenceWidth / 2);
+  image(fenceLT, fenceStartX, fenceStartY + fenceWidth / 2);
+  image(fenceRT, fenceStartX + fenceHeight, fenceStartY + fenceWidth / 2);
+  image(fenceV, fenceStartX, fenceStartY + fenceWidth / 2 + fenceHeight / 2);
+  image(
+    fenceV,
+    fenceStartX + fenceHeight,
+    fenceStartY + fenceWidth / 2 + fenceHeight / 2
+  );
+  image(fence, fenceStartX, fenceStartY + fenceWidth / 2 + fenceHeight);
+  image(
+    fence,
+    fenceStartX + fenceHeight,
+    fenceStartY + fenceWidth / 2 + fenceHeight
+  );
+}
