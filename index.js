@@ -151,7 +151,19 @@ function draw() {
     }
   }
   fill(color(255, 255, 255));
+  // sheep in fence count
+  let sheepInFence = 0;
+
   shared.sheepXY.forEach((sheep, idx) => {
+    // count sheeps in fence
+    if (
+      sheep.x >= width / 2 - fenceHeight / 2 + fenceWidth &&
+      sheep.x <= width / 2 + fenceHeight / 2 - fenceWidth &&
+      sheep.y >= height / 2 - fenceHeight / 2 + fenceWidth &&
+      sheep.y <= height / 2 + fenceHeight / 2
+    ) {
+      sheepInFence++;
+    }
     // draw the sheeps
     circle(sheep.x, sheep.y, sheepRadius);
     //check if sheep is hitting the fence
@@ -364,6 +376,9 @@ function draw() {
       }
     }
   });
+  // draw sheep in fence count
+  textSize(32);
+  text(sheepInFence, width - 80, 80);
   drawFence();
 }
 function drawFence() {
