@@ -388,10 +388,10 @@ function draw() {
 }
 function drawFence() {
   fill(fenceTempColor);
-  rect(fenceStartX, fenceStartY, fenceWidth, fenceHeight);
+  rect(fenceStartX - fenceWidth / 2, fenceStartY, fenceWidth, fenceHeight);
   rect(fenceStartX, fenceStartY, fenceHeight, fenceWidth);
   rect(
-    fenceStartX + fenceHeight - fenceWidth,
+    fenceStartX + fenceHeight - fenceWidth / 2,
     fenceStartY,
     fenceWidth,
     fenceHeight
@@ -399,7 +399,7 @@ function drawFence() {
 }
 function checkFenceHit(objX, objY, r) {
   hit1 = collideRectCircle(
-    fenceStartX,
+    fenceStartX - fenceWidth / 2,
     fenceStartY,
     fenceWidth,
     fenceHeight,
@@ -417,7 +417,7 @@ function checkFenceHit(objX, objY, r) {
     r
   );
   hit3 = collideRectCircle(
-    fenceStartX + fenceHeight - fenceWidth,
+    fenceStartX + fenceHeight - fenceWidth / 2,
     fenceStartY,
     fenceWidth,
     fenceHeight,
