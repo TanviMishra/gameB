@@ -131,13 +131,16 @@ function draw() {
   shared.sheepXY.forEach((sheep, idx) => {
     // draw the sheeps
     circle(sheep.x, sheep.y, sheepRadius);
-    sheepFenceHit = checkFenceHit(sheep.x, sheep.y, sheepRadius); //check if sheep is hitting the fence
+    //check if sheep is hitting the fence
+    sheepFenceHit = checkFenceHit(sheep.x, sheep.y, sheepRadius);
     // calculate heading
     const heading = createVector(
       sheep.x - myShared.dogX,
       sheep.y - myShared.dogY
     ).heading();
+
     if (sheepFenceHit) {
+      // sheep hit the fence
       let speed = -1;
       console.log("hit");
       let speedX;
@@ -175,10 +178,13 @@ function draw() {
       if (myShared.sheepsInRange.findIndex((id) => id === sheep.id) < 0) {
         myShared.sheepsInRange.push(sheep.id);
       }
+      let speed;
       if (sheepFenceHit) {
         speed = -1;
         console.log("hit");
-      } else speed = 2;
+      } else {
+        speed = 2;
+      }
       // calculate speed x and y based on heading
       let speedX;
       let speedY;
@@ -215,12 +221,15 @@ function draw() {
       if (myShared.sheepsInRange.findIndex((id) => id === sheep.id) < 0) {
         myShared.sheepsInRange.push(sheep.id);
       }
+      let speed;
       if (sheepFenceHit) {
         speed = -1;
         console.log("hit");
-      } else speed = 1;
-      speedX = speed;
-      speedY = speed;
+      } else {
+        speed = 1;
+      }
+      let speedX = speed;
+      let speedY = speed;
       if (heading >= 0 && heading < 90) {
         speedX = sin(heading) * speed;
         speedY = cos(heading) * speed;
