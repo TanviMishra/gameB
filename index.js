@@ -5,6 +5,8 @@ let fenceRT;
 let fenceV;
 let fence;
 let grass;
+let dogWalk;
+let sheepWalk;
 // shared variables
 let shared;
 let ptShareds;
@@ -42,6 +44,8 @@ function preload() {
   fenceV = loadImage("assets/fenceV.jpg");
   fence = loadImage("assets/fence.jpg");
   grass = loadImage("assets/grass.jpg");
+  dogWalk = loadImage("assets/dogwalk.gif");
+  sheepWalk = loadImage("assets/sheepwalk.gif");
   // connect & init shared variables
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
@@ -55,7 +59,7 @@ function preload() {
 
 function setup() {
   createCanvas(800, 800);
-  fenceTempColor = color(28, 91, 194, 100);
+  fenceTempColor = color(28, 91, 194, 0);
   // set fence to center of canvas
   fenceStartX = width / 2 - fenceHeight / 2;
   fenceStartY = height / 2 - fenceHeight / 2;
@@ -68,17 +72,17 @@ function setup() {
   // init dog & sheep positions
   // 1st dog at top-left, 2nd at top-right...
   if (ptShareds.length % 4 === 1) {
-    myShared.dogX = 5;
-    myShared.dogY = 5;
+    myShared.dogX = 30;
+    myShared.dogY = 30;
   } else if (ptShareds.length % 4 === 2) {
-    myShared.dogX = width - 5;
-    myShared.dogY = 5;
+    myShared.dogX = width - 30;
+    myShared.dogY = 30;
   } else if (ptShareds.length % 4 === 3) {
-    myShared.dogX = 5;
-    myShared.dogY = height - 5;
+    myShared.dogX = 30;
+    myShared.dogY = height - 30;
   } else {
-    myShared.dogX = width - 5;
-    myShared.dogY = height - 5;
+    myShared.dogX = width - 30;
+    myShared.dogY = height - 30;
   }
   // 10 sheeps for each user at random positions
   if (shared.sheepXY.length < ptShareds.length * 10) {
@@ -104,13 +108,14 @@ function draw() {
   ptShareds.forEach((partcpt, idx) => {
     noStroke();
     fill(color(138, 48, 0));
-    circle(partcpt.dogX, partcpt.dogY, dogRadius);
-    // stronger effect range
-    fill(color(138, 48, 0, 100));
-    circle(partcpt.dogX, partcpt.dogY, 100);
-    // weaker effect range
-    fill(color(138, 48, 0, 50));
-    circle(partcpt.dogX, partcpt.dogY, 200);
+    image(dogWalk, partcpt.dogX, partcpt.dogY);
+    // circle(partcpt.dogX, partcpt.dogY, dogRadius);
+    // // stronger effect range
+    // fill(color(138, 48, 0, 100));
+    // circle(partcpt.dogX, partcpt.dogY, 100);
+    // // weaker effect range
+    // fill(color(138, 48, 0, 50));
+    // circle(partcpt.dogX, partcpt.dogY, 200);
   });
   dogFenceHit = checkFenceHit(myShared.dogX, myShared.dogY, dogRadius); //check if dog is hitting the fence
   // detect key presses
@@ -167,8 +172,9 @@ function draw() {
       sheepInFence++;
     }
     // draw the sheeps
-    circle(sheep.x, sheep.y, sheepRadius);
-    //check if sheep is hitting the fence
+    image(sheepWalk, sheep.x, sheep.y);
+    // circle(sheep.x, sheep.y, sheepRadius);
+    // check if sheep is hitting the fence
     sheepFenceHit = checkFenceHit(sheep.x, sheep.y, sheepRadius + 30);
 
     if (sheepFenceHit) {
