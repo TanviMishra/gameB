@@ -170,18 +170,32 @@ function draw() {
     circle(sheep.x, sheep.y, sheepRadius);
     //check if sheep is hitting the fence
     sheepFenceHit = checkFenceHit(sheep.x, sheep.y, sheepRadius + 30);
-    // calculate heading
-    const heading = createVector(
-      sheep.x - myShared.dogX,
-      sheep.y - myShared.dogY
-    ).heading();
 
     if (sheepFenceHit) {
       // sheep hit the fence
-      let speed = -1;
+      let speed = 1;
       console.log("hit");
       let speedX;
       let speedY;
+      // calculate sheep heading with the fence
+      let heading;
+      if (sheepFenceHit === "hit1") {
+        heading = createVector(
+          sheep.x - fenceStartX,
+          sheep.y - (fenceStartY + fenceHeight / 2)
+        ).heading();
+      } else if (sheepFenceHit === "hit2") {
+        heading = createVector(
+          sheep.x - (fenceStartX + fenceHeight / 2),
+          sheep.y - (fenceStartY + fenceWidth / 2)
+        ).heading();
+      } else {
+        heading = createVector(
+          sheep.x -
+            (fenceStartX + fenceHeight - fenceWidth / 2 + fenceWidth / 2),
+          sheep.y - (fenceStartY + fenceHeight / 2)
+        ).heading();
+      }
       if (heading >= 0 && heading < 90) {
         speedX = sin(heading) * speed;
         speedY = cos(heading) * speed;
@@ -219,6 +233,11 @@ function draw() {
       // calculate speed x and y based on heading
       let speedX;
       let speedY;
+      // calculate sheep heading with this dog
+      const heading = createVector(
+        sheep.x - myShared.dogX,
+        sheep.y - myShared.dogY
+      ).heading();
       if (heading >= 0 && heading < 90) {
         speedX = sin(heading) * speed;
         speedY = cos(heading) * speed;
@@ -255,6 +274,11 @@ function draw() {
       let speed = 1;
       let speedX = speed;
       let speedY = speed;
+      // calculate sheep heading with this dog
+      const heading = createVector(
+        sheep.x - myShared.dogX,
+        sheep.y - myShared.dogY
+      ).heading();
       if (heading >= 0 && heading < 90) {
         speedX = sin(heading) * speed;
         speedY = cos(heading) * speed;
@@ -413,11 +437,20 @@ function checkFenceHit(objX, objY, r) {
     objY,
     r
   );
-  if (hit1 || hit2 || hit3) {
-    return true;
+  if (hit1) {
+    return "hit1";
+  } else if (hit2) {
+    return "hit2";
+  } else if (hit3) {
+    return "hit3";
   } else {
-    return false;
+    return null;
   }
+  // if (hit1 || hit2 || hit3) {
+  //   return true;
+  // } else {
+  //   return false;
+  // }
 }
 
 function drawAssets() {
