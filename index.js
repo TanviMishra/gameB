@@ -44,6 +44,7 @@ function preload() {
   fenceV = loadImage("assets/fenceV.jpg");
   fence = loadImage("assets/fence.jpg");
   grass = loadImage("assets/grass.jpg");
+  dog = loadImage("assets/dog.png");
   dogWalk = loadImage("assets/dogwalk.gif");
   sheepWalk = loadImage("assets/sheepwalk.gif");
   // connect & init shared variables
@@ -59,7 +60,7 @@ function preload() {
 
 function setup() {
   createCanvas(800, 800);
-  fenceTempColor = color(28, 91, 194, 100);
+  fenceTempColor = color(28, 91, 194, 0);
   // set fence to center of canvas
   fenceStartX = width / 2 - fenceHeight / 2;
   fenceStartY = height / 2 - fenceHeight / 2;
@@ -84,6 +85,7 @@ function setup() {
     myShared.dogX = width - 30;
     myShared.dogY = height - 30;
   }
+  myShared.dogRunning = false;
   // 10 sheeps for each user at random positions
   if (shared.sheepXY.length < ptShareds.length * 10) {
     for (let i = 0; i < 10; i++) {
@@ -108,7 +110,11 @@ function draw() {
   ptShareds.forEach((partcpt, idx) => {
     noStroke();
     fill(color(138, 48, 0));
-    image(dogWalk, partcpt.dogX, partcpt.dogY, 56, 56);
+    if (partcpt.dogRunning) {
+      image(dogWalk, partcpt.dogX, partcpt.dogY, 56, 56);
+    } else {
+      image(dog, partcpt.dogX, partcpt.dogY, 56, 56);
+    }
     // circle(partcpt.dogX, partcpt.dogY, dogRadius);
     // // stronger effect range
     // fill(color(138, 48, 0, 100));
@@ -120,6 +126,7 @@ function draw() {
   dogFenceHit = checkFenceHit(myShared.dogX, myShared.dogY, dogRadius); //check if dog is hitting the fence
   // detect key presses
   if (keyIsPressed) {
+    myShared.dogRunning = true;
     if (dogFenceHit) {
       myShared.dogX = prevDogX;
       myShared.dogY = prevDogY; //fence hit so send dog back to previous position
@@ -156,6 +163,8 @@ function draw() {
         }
       }
     }
+  } else {
+    myShared.dogRunning = false;
   }
   fill(color(255, 255, 255));
   // sheep in fence count
@@ -171,9 +180,7 @@ function draw() {
     ) {
       sheepInFence++;
     }
-    // draw the sheeps
-    image(sheepWalk, sheep.x, sheep.y, 56, 56);
-    // circle(sheep.x, sheep.y, sheepRadius);
+
     // check if sheep is hitting the fence
     sheepFenceHit = checkFenceHit(sheep.x, sheep.y, sheepRadius + 30);
 
@@ -398,6 +405,9 @@ function draw() {
         }
       }
     }
+    // draw the sheep
+    image(sheepWalk, sheep.x, sheep.y, 56, 56);
+    // circle(sheep.x, sheep.y, sheepRadius);
   });
   // draw sheep in fence count
   textSize(32);
