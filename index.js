@@ -59,7 +59,7 @@ function preload() {
 
 function setup() {
   createCanvas(800, 800);
-  fenceTempColor = color(28, 91, 194, 0);
+  fenceTempColor = color(28, 91, 194, 100);
   // set fence to center of canvas
   fenceStartX = width / 2 - fenceHeight / 2;
   fenceStartY = height / 2 - fenceHeight / 2;
@@ -108,7 +108,7 @@ function draw() {
   ptShareds.forEach((partcpt, idx) => {
     noStroke();
     fill(color(138, 48, 0));
-    image(dogWalk, partcpt.dogX, partcpt.dogY);
+    image(dogWalk, partcpt.dogX, partcpt.dogY, 56, 56);
     // circle(partcpt.dogX, partcpt.dogY, dogRadius);
     // // stronger effect range
     // fill(color(138, 48, 0, 100));
@@ -172,7 +172,7 @@ function draw() {
       sheepInFence++;
     }
     // draw the sheeps
-    image(sheepWalk, sheep.x, sheep.y);
+    image(sheepWalk, sheep.x, sheep.y, 56, 56);
     // circle(sheep.x, sheep.y, sheepRadius);
     // check if sheep is hitting the fence
     sheepFenceHit = checkFenceHit(sheep.x, sheep.y, sheepRadius + 30);
@@ -461,25 +461,89 @@ function checkFenceHit(objX, objY, r) {
 
 function drawAssets() {
   // draw all the grass first
-  for (let i = 0; i < 9; i++) {
-    for (let j = 0; j < 9; j++) {
-      image(grass, j * (fenceHeight / 2), i * (fenceHeight / 2));
+  for (let i = 0; i < 17; i++) {
+    for (let j = 0; j < 17; j++) {
+      image(grass, j * 50, i * 50, 50, 50);
     }
   }
   // draw fences on top
-  image(fenceH, fenceStartX + fenceHeight / 2, fenceStartY + fenceWidth / 2);
-  image(fenceLT, fenceStartX, fenceStartY + fenceWidth / 2);
-  image(fenceRT, fenceStartX + fenceHeight, fenceStartY + fenceWidth / 2);
-  image(fenceV, fenceStartX, fenceStartY + fenceWidth / 2 + fenceHeight / 2);
+  image(
+    fenceH,
+    fenceStartX + fenceHeight / 2,
+    fenceStartY + fenceWidth / 2,
+    50,
+    50
+  );
+  image(
+    fenceH,
+    fenceStartX + fenceHeight / 2 - 50,
+    fenceStartY + fenceWidth / 2,
+    50,
+    50
+  );
+  image(
+    fenceH,
+    fenceStartX + fenceHeight / 2 + 50,
+    fenceStartY + fenceWidth / 2,
+    50,
+    50
+  );
+  image(fenceLT, fenceStartX, fenceStartY + fenceWidth / 2, 50, 50);
+  image(
+    fenceRT,
+    fenceStartX + fenceHeight,
+    fenceStartY + fenceWidth / 2,
+    50,
+    50
+  );
+  image(
+    fenceV,
+    fenceStartX,
+    fenceStartY + fenceWidth / 2 + fenceHeight / 2,
+    50,
+    50
+  );
+  image(
+    fenceV,
+    fenceStartX,
+    fenceStartY + fenceWidth / 2 + fenceHeight / 2 - 50,
+    50,
+    50
+  );
+  image(
+    fenceV,
+    fenceStartX,
+    fenceStartY + fenceWidth / 2 + fenceHeight / 2 + 50,
+    50,
+    50
+  );
   image(
     fenceV,
     fenceStartX + fenceHeight,
-    fenceStartY + fenceWidth / 2 + fenceHeight / 2
+    fenceStartY + fenceWidth / 2 + fenceHeight / 2,
+    50,
+    50
   );
-  image(fence, fenceStartX, fenceStartY + fenceWidth / 2 + fenceHeight);
+  image(
+    fenceV,
+    fenceStartX + fenceHeight,
+    fenceStartY + fenceWidth / 2 + fenceHeight / 2 - 50,
+    50,
+    50
+  );
+  image(
+    fenceV,
+    fenceStartX + fenceHeight,
+    fenceStartY + fenceWidth / 2 + fenceHeight / 2 + 50,
+    50,
+    50
+  );
+  image(fence, fenceStartX, fenceStartY + fenceWidth / 2 + fenceHeight, 50, 50);
   image(
     fence,
     fenceStartX + fenceHeight,
-    fenceStartY + fenceWidth / 2 + fenceHeight
+    fenceStartY + fenceWidth / 2 + fenceHeight,
+    50,
+    50
   );
 }
