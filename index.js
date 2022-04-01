@@ -26,7 +26,7 @@ let prevMoveVal9 = 0;
 let hit1 = false;
 let hit2 = false;
 let hit3 = false;
-let fenceTempColor; // TODO: make it disappear
+let fenceTempColor; // the alpha value should always be zero to make it transparent
 let dogRadius = 20;
 let sheepRadius = 20;
 let dogFenceHit = false;
@@ -67,6 +67,7 @@ function setup() {
   // first client init
   if (partyIsHost()) {
     shared.sheepXY = [];
+    shared.gameStartTime = moment(); // https://momentjs.com/
   }
   // keeps record of which sheeps are in range of this dog
   myShared.sheepsInRange = [];
@@ -409,9 +410,23 @@ function draw() {
     image(sheepWalk, sheep.x, sheep.y, 56, 56);
     // circle(sheep.x, sheep.y, sheepRadius);
   });
+
   // draw sheep in fence count
   textSize(32);
   text(sheepInFence, width - 80, 80);
+
+  // calculate countdown, 1200000 means 1200000 milliseconds, for reference check https://momentjs.com/
+  const countdownString = moment(
+    moment(120000).diff(moment().diff(shared.gameStartTime))
+  ).format("mm:ss");
+  if (parseInt(countdownString.slice(0, 2)) <= 2) {
+    // draw countdown string
+    text(countdownString, 80, 80);
+  } else {
+    // TODO: countdown expired, display lose state
+  }
+
+  // draw fence colliders
   drawFence();
 }
 function drawFence() {
