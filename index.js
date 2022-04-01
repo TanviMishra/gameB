@@ -1,4 +1,4 @@
-//image variables
+// asset variables
 let fenceH;
 let fenceLT;
 let fenceRT;
@@ -7,6 +7,8 @@ let fence;
 let grass;
 let dogWalk;
 let sheepWalk;
+let sheepBleatSound;
+let dogBarkSound;
 // shared variables
 let shared;
 let ptShareds;
@@ -47,6 +49,8 @@ function preload() {
   dog = loadImage("assets/dog.png");
   dogWalk = loadImage("assets/dogwalk.gif");
   sheepWalk = loadImage("assets/sheepwalk.gif");
+  sheepBleatSound = loadSound("assets/sheep-bleating.wav");
+  dogBarkSound = loadSound("assets/dog-bark.wav");
   // connect & init shared variables
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
@@ -101,18 +105,27 @@ function setup() {
   angleMode(DEGREES);
   // change image mode to center
   imageMode(CENTER);
+  // subscribe to play dog bark events
+  partySubscribe("playDogBark", onPlayDogBark);
+  partySubscribe("stopPlayDogBark", onStopPlayDogBark);
 }
 
 function draw() {
   background(220);
   // draw assets
   drawAssets();
-  // draw dogs
+  // play sound
+  if (!sheepBleatSound.isPlaying()) sheepBleatSound.play();
+
+  let noDogRunning = true;
   ptShareds.forEach((partcpt, idx) => {
     noStroke();
     fill(color(138, 48, 0));
     if (partcpt.dogRunning) {
+      // a dog is running
+      noDogRunning = false;
       image(dogWalk, partcpt.dogX, partcpt.dogY, 56, 56);
+      partyEmit("playDogBark");
     } else {
       image(dog, partcpt.dogX, partcpt.dogY, 56, 56);
     }
@@ -124,7 +137,10 @@ function draw() {
     // fill(color(138, 48, 0, 50));
     // circle(partcpt.dogX, partcpt.dogY, 200);
   });
-  dogFenceHit = checkFenceHit(myShared.dogX, myShared.dogY, dogRadius); //check if dog is hitting the fence
+  // no dog is running
+  if (noDogRunning) partyEmit("stopPlayDogBark");
+  // check if dog is hitting the fence
+  dogFenceHit = checkFenceHit(myShared.dogX, myShared.dogY, dogRadius);
   // detect key presses
   if (keyIsPressed) {
     myShared.dogRunning = true;
@@ -571,4 +587,13 @@ function drawAssets() {
     50,
     50
   );
+}
+
+function onPlayDogBark() {
+  // play dog bark sound
+  if (!dogBarkSound.isPlaying()) dogBarkSound.play();
+}
+
+function onStopPlayDogBark() {
+  dogBarkSound.stop();
 }
