@@ -108,14 +108,15 @@ function setup() {
   // subscribe to play dog bark events
   partySubscribe("playDogBark", onPlayDogBark);
   partySubscribe("stopPlayDogBark", onStopPlayDogBark);
+  // subscribe to play sheep bleat events
+  partySubscribe("playSheepBleat", onPlaySheepBleat);
+  partySubscribe("stopPlaySheepBleat", onStopPlaySheepBleat);
 }
 
 function draw() {
   background(220);
   // draw assets
   drawAssets();
-  // play sound
-  if (!sheepBleatSound.isPlaying()) sheepBleatSound.play();
 
   let noDogRunning = true;
   ptShareds.forEach((partcpt, idx) => {
@@ -186,7 +187,8 @@ function draw() {
   fill(color(255, 255, 255));
   // sheep in fence count
   let sheepInFence = 0;
-
+  // check if no sheep in range
+  let noSheepInRange = true;
   shared.sheepXY.forEach((sheep, idx) => {
     // count sheeps in fence
     if (
@@ -256,6 +258,8 @@ function draw() {
       }
     } else if (dist(myShared.dogX, myShared.dogY, sheep.x, sheep.y) < 50) {
       // in stronger effect range
+      noSheepInRange = false;
+      partyEmit("playSheepBleat");
       if (myShared.sheepsInRange.findIndex((id) => id === sheep.id) < 0) {
         myShared.sheepsInRange.push(sheep.id);
       }
@@ -298,6 +302,8 @@ function draw() {
       }
     } else if (dist(myShared.dogX, myShared.dogY, sheep.x, sheep.y) < 100) {
       // in weaker effect range
+      noSheepInRange = false;
+      partyEmit("playSheepBleat");
       if (myShared.sheepsInRange.findIndex((id) => id === sheep.id) < 0) {
         myShared.sheepsInRange.push(sheep.id);
       }
@@ -426,6 +432,9 @@ function draw() {
     image(sheepWalk, sheep.x, sheep.y, 56, 56);
     // circle(sheep.x, sheep.y, sheepRadius);
   });
+
+  // if no sheep in range, stop playing
+  if (noSheepInRange) partyEmit("stopPlaySheepBleat");
 
   // draw sheep in fence count
   textSize(32);
@@ -587,6 +596,16 @@ function drawAssets() {
     50,
     50
   );
+}
+
+function onPlaySheepBleat() {
+  // play sheep bleat sound
+  console.log("++++++++++++++");
+  if (!sheepBleatSound.isPlaying()) sheepBleatSound.play();
+}
+
+function onStopPlaySheepBleat() {
+  sheepBleatSound.stop();
 }
 
 function onPlayDogBark() {
