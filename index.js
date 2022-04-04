@@ -44,6 +44,9 @@ let instructions=[];
 let colA = {r:0, g:0, b:0};
 let colB = {r:0, g:0, b:0};
 
+//win check
+let playerWin=false;
+
 function preload() {
   // load assets
   fenceH = loadImage("assets/fenceH.jpg");
@@ -60,6 +63,8 @@ function preload() {
   for (let i = 1; i < 6; i++){
     instructions[i] = loadImage('assets/instruct/' + i + '.png');
   }
+  winScreen=loadImage('assets/won.png');
+  loseScreen=loadImage('assets/lost.png')
   // connect & init shared variables
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
@@ -70,8 +75,8 @@ function preload() {
   ptShareds = partyLoadParticipantShareds();
   myShared = partyLoadMyShared();
 }
-
 function setup() {
+  partyToggleInfo(false); //hide p5party toggle info
   createCanvas(700, 700);
   fenceTempColor = color(28, 91, 194, 0);
   // set fence to center of canvas
@@ -121,7 +126,6 @@ function setup() {
   partySubscribe("playSheepBleat", onPlaySheepBleat);
   partySubscribe("stopPlaySheepBleat", onStopPlaySheepBleat);
 }
-
 function draw() {
   switch(pageNum){
     case 0:
@@ -267,7 +271,7 @@ function playGame(){
     if (sheepFenceHit) {
       // sheep hit the fence
       let speed = 1;
-      console.log("hit");
+      // console.log("hit");
       let speedX;
       let speedY;
       // calculate sheep heading with the fence
@@ -510,10 +514,15 @@ function playGame(){
     text(countdownString, 80, 80);
   } else {
     // TODO: countdown expired, display lose state
+    text("YOU LOST", 80, 80);
+    image(loseScreen,350,350,width,height)
   }
 
   // draw fence colliders
   drawFence();
+
+  //check win condition
+  checkGameWin(sheepInFence,countdownString);
 }
 function drawFence() {
   fill(fenceTempColor);
@@ -659,7 +668,7 @@ function drawAssets() {
 }
 function onPlaySheepBleat() {
   // play sheep bleat sound
-  console.log("++++++++++++++");
+  // console.log("++++++++++++++");
   if (!sheepBleatSound.isPlaying()) sheepBleatSound.play();
 }
 function onStopPlaySheepBleat() {
@@ -673,7 +682,7 @@ function onStopPlayDogBark() {
   dogBarkSound.stop();
 }
 function mouseClicked(){
-  console.log(pageNum);
+  // console.log(pageNum);
   if(mouseY>655 && mouseY<705){
     if(mouseX>565 && mouseX<665){ //next
       // if(pageNum==5){
@@ -689,5 +698,13 @@ function mouseClicked(){
       pageNum=5;
     }
   } 
-  console.log(pageNum);
+  // console.log(pageNum);
+}
+function checkGameWin(sheepIn, timer){
+  console.log(10*(ptShareds.length))
+  if(sheepIn>=10*(ptShareds.length) && playerWin==false){
+    playerWin==true;
+    console.log("won");
+    image(winScreen,350,350,width,height)
+  }
 }
