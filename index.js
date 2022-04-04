@@ -724,7 +724,10 @@ function mouseClicked() {
       //back
       if (pageNum > 0) {
         pageNum--;
-      } else pageNum = 5;
+      } else {
+        shared.gameStartTime = moment(); // https://momentjs.com/
+        pageNum = 5;
+      }
     }
   }
   // console.log(pageNum);
