@@ -5,8 +5,10 @@ let fenceRT;
 let fenceV;
 let fence;
 let grass;
-let dogWalk;
+let dogIdleL, dogIdleR;
+let dogWalkL, dogWalkR;
 let sheepWalk;
+let sheepCountImg, clockImg;
 let sheepBleatSound;
 let dogBarkSound;
 // shared variables
@@ -37,6 +39,7 @@ let fenceWidth = 24;
 let fenceHeight = 200;
 let fenceStartX;
 let fenceStartY;
+let lastDirection = "right"
 
 //stage values to change instructions
 let pageNum=0;
@@ -55,9 +58,13 @@ function preload() {
   fenceV = loadImage("assets/fenceV.jpg");
   fence = loadImage("assets/fence.jpg");
   grass = loadImage("assets/grass.jpg");
-  dog = loadImage("assets/dog.png");
-  dogWalk = loadImage("assets/dogwalk.gif");
+  dogIdleL = loadImage("assets/dogidleL.gif");
+  dogWalkL = loadImage("assets/dogwalkL.gif");
+  dogIdleR = loadImage("assets/dogidleR.gif");
+  dogWalkR = loadImage("assets/dogwalkR.gif");
   sheepWalk = loadImage("assets/sheepwalk.gif");
+  sheepCountImg = loadImage("assets/sheepcount.png");
+  clockImg = loadImage("assets/clock.png");
   sheepBleatSound = loadSound("assets/sheep-bleating.wav");
   dogBarkSound = loadSound("assets/dog-bark.wav");
   for (let i = 1; i < 6; i++){
@@ -183,6 +190,7 @@ function playGame(){
   // draw assets
   drawAssets();
 
+ 
   let noDogRunning = true;
   ptShareds.forEach((partcpt, idx) => {
     noStroke();
@@ -190,10 +198,29 @@ function playGame(){
     if (partcpt.dogRunning) {
       // a dog is running
       noDogRunning = false;
-      image(dogWalk, partcpt.dogX, partcpt.dogY, 56, 56);
+      if(keyIsPressed){
+        if(keyIsDown(LEFT_ARROW)){
+          image(dogWalkL, partcpt.dogX, partcpt.dogY, 56, 56);
+          lastDirection = "left";
+        }else if(keyIsDown(RIGHT_ARROW)){
+          image(dogWalkR, partcpt.dogX, partcpt.dogY, 56, 56);
+          lastDirection = "right"
+        }else{
+          if(lastDirection === "left"){
+            image(dogWalkL, partcpt.dogX, partcpt.dogY, 56, 56);
+          }else if(lastDirection === "right"){
+            image(dogWalkR, partcpt.dogX, partcpt.dogY, 56, 56);
+          }
+        }
+      }
+      
       partyEmit("playDogBark");
     } else {
-      image(dog, partcpt.dogX, partcpt.dogY, 56, 56);
+      if(lastDirection === "left"){
+        image(dogIdleL, partcpt.dogX, partcpt.dogY, 56, 56);
+      }else if(lastDirection === "right"){
+        image(dogIdleR, partcpt.dogX, partcpt.dogY, 56, 56);
+      }
     }
     // circle(partcpt.dogX, partcpt.dogY, dogRadius);
     // // stronger effect range
@@ -504,6 +531,7 @@ function playGame(){
   // draw sheep in fence count
   textSize(32);
   text(sheepInFence, width - 80, 80);
+  image(sheepCountImg, width-110, 70);
 
   // calculate countdown, 1200000 means 1200000 milliseconds, for reference check https://momentjs.com/
   const countdownString = moment(
@@ -512,6 +540,7 @@ function playGame(){
   if (parseInt(countdownString.slice(0, 2)) <= 2) {
     // draw countdown string
     text(countdownString, 80, 80);
+    image(clockImg, 60, 70);
   } else {
     // TODO: countdown expired, display lose state
     text("YOU LOST", 80, 80);
