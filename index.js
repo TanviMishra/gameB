@@ -38,6 +38,12 @@ let fenceHeight = 200;
 let fenceStartX;
 let fenceStartY;
 
+//stage values to change instructions
+let pageNum=0;
+let instructions=[];
+let colA = {r:0, g:0, b:0};
+let colB = {r:0, g:0, b:0};
+
 function preload() {
   // load assets
   fenceH = loadImage("assets/fenceH.jpg");
@@ -51,6 +57,9 @@ function preload() {
   sheepWalk = loadImage("assets/sheepwalk.gif");
   sheepBleatSound = loadSound("assets/sheep-bleating.wav");
   dogBarkSound = loadSound("assets/dog-bark.wav");
+  for (let i = 1; i < 6; i++){
+    instructions[i] = loadImage('assets/instruct/' + i + '.png');
+  }
   // connect & init shared variables
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
@@ -63,7 +72,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(700, 700);
   fenceTempColor = color(28, 91, 194, 0);
   // set fence to center of canvas
   fenceStartX = width / 2 - fenceHeight / 2;
@@ -114,7 +123,59 @@ function setup() {
 }
 
 function draw() {
-  background(220);
+  switch(pageNum){
+    case 0:
+      background(220);
+      instructPage(pageNum+1);
+      break;
+    case 1:
+      background(220);
+      instructPage(pageNum+1);
+      break;
+    case 2:
+      background(220);
+      instructPage(pageNum+1);
+      break;
+    case 3:
+      background(220);
+      instructPage(pageNum+1);
+      break;
+    case 4:
+      background(220);
+      instructPage(pageNum+1);
+      break;
+    case 5:
+      background(220);
+      playGame();
+      break;
+  }
+}
+function instructPage(num){
+  // draw assets
+  textSize(35);
+  image(instructions[num],350,350,width,height)
+  fill(colB.r, colB.g, colB.b);
+  // rect(58,655,100,50)
+  text("NEXT",565,685);
+  fill(colA.r, colA.g, colA.b);
+  if(num>1){
+    text("BACK",58,685);
+  }
+  else{
+    text("SKIP",58,685);
+  }
+  if(mouseX>565 && mouseX<665 && mouseY>655 && mouseY<705){
+    colB = {r:200, g:200, b:200};
+  }else{
+    colB = {r:0, g:0, b:0};
+  }
+  if(mouseX>58 && mouseX<158 && mouseY>655 && mouseY<705){
+    colA = {r:200, g:200, b:200};
+  }else{
+    colA = {r:0, g:0, b:0};
+  }
+}
+function playGame(){
   // draw assets
   drawAssets();
 
@@ -508,7 +569,6 @@ function checkFenceHit(objX, objY, r) {
   //   return false;
   // }
 }
-
 function drawAssets() {
   // draw all the grass first
   for (let i = 0; i < 17; i++) {
@@ -597,22 +657,37 @@ function drawAssets() {
     50
   );
 }
-
 function onPlaySheepBleat() {
   // play sheep bleat sound
   console.log("++++++++++++++");
   if (!sheepBleatSound.isPlaying()) sheepBleatSound.play();
 }
-
 function onStopPlaySheepBleat() {
   sheepBleatSound.stop();
 }
-
 function onPlayDogBark() {
   // play dog bark sound
   if (!dogBarkSound.isPlaying()) dogBarkSound.play();
 }
-
 function onStopPlayDogBark() {
   dogBarkSound.stop();
+}
+function mouseClicked(){
+  console.log(pageNum);
+  if(mouseY>655 && mouseY<705){
+    if(mouseX>565 && mouseX<665){ //next
+      // if(pageNum==5){
+      //   playGame()
+      // }
+      // else
+        pageNum++;
+    }else if(mouseX>58 && mouseX<158){ //back
+      if(pageNum>0){
+        pageNum--;
+      }
+      else
+      pageNum=5;
+    }
+  } 
+  console.log(pageNum);
 }

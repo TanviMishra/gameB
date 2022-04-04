@@ -1,8 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Rubik+Puddles&display=swap');
 body {
   margin: 0;
+  background-color: #59c21f;
+}
+h1{
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Rubik Puddles', cursive;
+  font-size: 50px;
 }
 
 canvas {
-  display: block;
-  user-select: none;
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 100px;
 }
