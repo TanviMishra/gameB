@@ -39,16 +39,16 @@ let fenceWidth = 24;
 let fenceHeight = 200;
 let fenceStartX;
 let fenceStartY;
-let lastDirection = "right"
+let lastDirection = "right";
 
 //stage values to change instructions
-let pageNum=0;
-let instructions=[];
-let colA = {r:0, g:0, b:0};
-let colB = {r:0, g:0, b:0};
+let pageNum = 0;
+let instructions = [];
+let colA = { r: 0, g: 0, b: 0 };
+let colB = { r: 0, g: 0, b: 0 };
 
 //win check
-let playerWin=false;
+let playerWin = false;
 
 function preload() {
   // load assets
@@ -67,11 +67,11 @@ function preload() {
   clockImg = loadImage("assets/clock.png");
   sheepBleatSound = loadSound("assets/sheep-bleating.wav");
   dogBarkSound = loadSound("assets/dog-bark.wav");
-  for (let i = 1; i < 6; i++){
-    instructions[i] = loadImage('assets/instruct/' + i + '.png');
+  for (let i = 1; i < 6; i++) {
+    instructions[i] = loadImage("assets/instruct/" + i + ".png");
   }
-  winScreen=loadImage('assets/won.png');
-  loseScreen=loadImage('assets/lost.png')
+  winScreen = loadImage("assets/won.png");
+  loseScreen = loadImage("assets/lost.png");
   // connect & init shared variables
   partyConnect(
     "wss://deepstream-server-1.herokuapp.com",
@@ -92,7 +92,6 @@ function setup() {
   // first client init
   if (partyIsHost()) {
     shared.sheepXY = [];
-    shared.gameStartTime = moment(); // https://momentjs.com/
   }
   // keeps record of which sheeps are in range of this dog
   myShared.sheepsInRange = [];
@@ -134,26 +133,27 @@ function setup() {
   partySubscribe("stopPlaySheepBleat", onStopPlaySheepBleat);
 }
 function draw() {
-  switch(pageNum){
+  switch (pageNum) {
     case 0:
       background(220);
-      instructPage(pageNum+1);
+      instructPage(pageNum + 1);
       break;
     case 1:
       background(220);
-      instructPage(pageNum+1);
+      instructPage(pageNum + 1);
       break;
     case 2:
       background(220);
-      instructPage(pageNum+1);
+      instructPage(pageNum + 1);
       break;
     case 3:
       background(220);
-      instructPage(pageNum+1);
+      instructPage(pageNum + 1);
       break;
     case 4:
       background(220);
-      instructPage(pageNum+1);
+      instructPage(pageNum + 1);
+      shared.gameStartTime = moment(); // https://momentjs.com/
       break;
     case 5:
       background(220);
@@ -161,36 +161,34 @@ function draw() {
       break;
   }
 }
-function instructPage(num){
+function instructPage(num) {
   // draw assets
   textSize(35);
-  image(instructions[num],350,350,width,height)
+  image(instructions[num], 350, 350, width, height);
   fill(colB.r, colB.g, colB.b);
   // rect(58,655,100,50)
-  text("NEXT",565,685);
+  text("NEXT", 565, 685);
   fill(colA.r, colA.g, colA.b);
-  if(num>1){
-    text("BACK",58,685);
+  if (num > 1) {
+    text("BACK", 58, 685);
+  } else {
+    text("SKIP", 58, 685);
   }
-  else{
-    text("SKIP",58,685);
+  if (mouseX > 565 && mouseX < 665 && mouseY > 655 && mouseY < 705) {
+    colB = { r: 200, g: 200, b: 200 };
+  } else {
+    colB = { r: 0, g: 0, b: 0 };
   }
-  if(mouseX>565 && mouseX<665 && mouseY>655 && mouseY<705){
-    colB = {r:200, g:200, b:200};
-  }else{
-    colB = {r:0, g:0, b:0};
-  }
-  if(mouseX>58 && mouseX<158 && mouseY>655 && mouseY<705){
-    colA = {r:200, g:200, b:200};
-  }else{
-    colA = {r:0, g:0, b:0};
+  if (mouseX > 58 && mouseX < 158 && mouseY > 655 && mouseY < 705) {
+    colA = { r: 200, g: 200, b: 200 };
+  } else {
+    colA = { r: 0, g: 0, b: 0 };
   }
 }
-function playGame(){
+function playGame() {
   // draw assets
   drawAssets();
 
- 
   let noDogRunning = true;
   ptShareds.forEach((partcpt, idx) => {
     noStroke();
@@ -214,7 +212,7 @@ function playGame(){
       //   }
       // }
       image(dogIdleR, partcpt.dogX, partcpt.dogY, 56, 56);
-      
+
       partyEmit("playDogBark");
     } else {
       // if(lastDirection === "left"){
@@ -533,7 +531,7 @@ function playGame(){
   // draw sheep in fence count
   textSize(32);
   text(sheepInFence, width - 80, 80);
-  image(sheepCountImg, width-110, 70);
+  image(sheepCountImg, width - 110, 70);
 
   // calculate countdown, 1200000 means 1200000 milliseconds, for reference check https://momentjs.com/
   const countdownString = moment(
@@ -546,14 +544,14 @@ function playGame(){
   } else {
     // TODO: countdown expired, display lose state
     text("YOU LOST", 80, 80);
-    image(loseScreen,350,350,width,height)
+    image(loseScreen, 350, 350, width, height);
   }
 
   // draw fence colliders
   drawFence();
 
   //check win condition
-  checkGameWin(sheepInFence,countdownString);
+  checkGameWin(sheepInFence, countdownString);
 }
 function drawFence() {
   fill(fenceTempColor);
@@ -712,30 +710,30 @@ function onPlayDogBark() {
 function onStopPlayDogBark() {
   dogBarkSound.stop();
 }
-function mouseClicked(){
+function mouseClicked() {
   // console.log(pageNum);
-  if(mouseY>655 && mouseY<705){
-    if(mouseX>565 && mouseX<665){ //next
+  if (mouseY > 655 && mouseY < 705) {
+    if (mouseX > 565 && mouseX < 665) {
+      //next
       // if(pageNum==5){
       //   playGame()
       // }
       // else
-        pageNum++;
-    }else if(mouseX>58 && mouseX<158){ //back
-      if(pageNum>0){
+      pageNum++;
+    } else if (mouseX > 58 && mouseX < 158) {
+      //back
+      if (pageNum > 0) {
         pageNum--;
-      }
-      else
-      pageNum=5;
+      } else pageNum = 5;
     }
-  } 
+  }
   // console.log(pageNum);
 }
-function checkGameWin(sheepIn, timer){
+function checkGameWin(sheepIn, timer) {
   //console.log(10*(ptShareds.length))
-  if(sheepIn>=10*(ptShareds.length) && playerWin==false){
-    playerWin==true;
+  if (sheepIn >= 10 * ptShareds.length && playerWin == false) {
+    playerWin == true;
     console.log("won");
-    image(winScreen,350,350,width,height)
+    image(winScreen, 350, 350, width, height);
   }
 }
