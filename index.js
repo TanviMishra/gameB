@@ -198,29 +198,31 @@ function playGame(){
     if (partcpt.dogRunning) {
       // a dog is running
       noDogRunning = false;
-      if(keyIsPressed){
-        if(keyIsDown(LEFT_ARROW)){
-          image(dogWalkL, partcpt.dogX, partcpt.dogY, 56, 56);
-          lastDirection = "left";
-        }else if(keyIsDown(RIGHT_ARROW)){
-          image(dogWalkR, partcpt.dogX, partcpt.dogY, 56, 56);
-          lastDirection = "right"
-        }else{
-          if(lastDirection === "left"){
-            image(dogWalkL, partcpt.dogX, partcpt.dogY, 56, 56);
-          }else if(lastDirection === "right"){
-            image(dogWalkR, partcpt.dogX, partcpt.dogY, 56, 56);
-          }
-        }
-      }
+      // if(keyIsPressed){
+      //   if(keyIsDown(LEFT_ARROW)){
+      //     image(dogWalkL, partcpt.dogX, partcpt.dogY, 56, 56);
+      //     lastDirection = "left";
+      //   }else if(keyIsDown(RIGHT_ARROW)){
+      //     image(dogWalkR, partcpt.dogX, partcpt.dogY, 56, 56);
+      //     lastDirection = "right"
+      //   }else{
+      //     if(lastDirection === "left"){
+      //       image(dogWalkL, partcpt.dogX, partcpt.dogY, 56, 56);
+      //     }else if(lastDirection === "right"){
+      //       image(dogIdleR, partcpt.dogX, partcpt.dogY, 56, 56);
+      //     }
+      //   }
+      // }
+      image(dogIdleR, partcpt.dogX, partcpt.dogY, 56, 56);
       
       partyEmit("playDogBark");
     } else {
-      if(lastDirection === "left"){
-        image(dogIdleL, partcpt.dogX, partcpt.dogY, 56, 56);
-      }else if(lastDirection === "right"){
-        image(dogIdleR, partcpt.dogX, partcpt.dogY, 56, 56);
-      }
+      // if(lastDirection === "left"){
+      //   image(dogIdleL, partcpt.dogX, partcpt.dogY, 56, 56);
+      // }else if(lastDirection === "right"){
+      //   image(dogIdleR, partcpt.dogX, partcpt.dogY, 56, 56);
+      // }
+      image(dogIdleR, partcpt.dogX, partcpt.dogY, 56, 56);
     }
     // circle(partcpt.dogX, partcpt.dogY, dogRadius);
     // // stronger effect range
