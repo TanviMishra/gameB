@@ -701,7 +701,7 @@ function mouseClicked(){
   // console.log(pageNum);
 }
 function checkGameWin(sheepIn, timer){
-  console.log(10*(ptShareds.length))
+  //console.log(10*(ptShareds.length))
   if(sheepIn>=10*(ptShareds.length) && playerWin==false){
     playerWin==true;
     console.log("won");
