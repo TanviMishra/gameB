@@ -7,10 +7,6 @@
 
 **Website:** [https://tanvimishra.github.io/gameB/](https://tanvimishra.github.io/gameB/)
 
-## Logo
-
-![logo.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cdef0bdc-5f3c-4e93-8667-e1e8c0e195c2/logo.png)
-
 ## Game Description
 
 You are a border collie (*woof*) and you have only one job: herd all the sheep back into the pen! Call your other border collie friends to help you out and try to get all them sheeps fenced before the time runs out.
